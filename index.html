@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이행보증보험 업무 위탁 및 전문 컨설팅 서비스</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            500: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        },
+                        accent: {
+                            500: '#ea580c',
+                            600: '#c2410c',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        body { 
+            font-family: 'Pretendard', sans-serif; 
+            background-color: #ffffff; 
+            color: #1e293b; 
+            line-height: 1.7;
+            word-break: keep-all;
+            scroll-behavior: smooth;
+        }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin: 0 auto; height: 350px; }
+        .diag-chart-container { position: relative; width: 100%; height: 240px; }
+        .glass-panel { background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(12px); }
+        .tab-btn { position: relative; transition: all 0.2s; }
+        .tab-btn.active { color: #ea580c; font-weight: 800; }
+        .tab-btn.active::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 3px; background-color: #ea580c; border-radius: 99px; }
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        .guarantee-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid #f1f5f9; }
+        .guarantee-card:hover { transform: translateY(-6px); border-color: #ea580c; box-shadow: 0 25px 30px -10px rgb(0 0 0 / 0.08); }
+        input[type="checkbox"]:checked + label { border-color: #ea580c; background-color: #fff7ed; color: #9a3412; font-weight: 700; }
+    </style>
+</head>
+<body class="antialiased text-slate-800">
+
+    <!-- 네비게이션 -->
+    <nav class="fixed w-full z-50 glass-panel border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="text-2xl mr-2">🏛️</span>
+                    <span class="font-extrabold text-2xl tracking-tight text-brand-900">보증솔루션 <span class="text-accent-500">파트너스</span></span>
+                </div>
+                <div class="hidden lg:flex space-x-10 text-[15px] font-bold text-slate-500">
+                    <a href="#types-section" class="hover:text-brand-900 transition-colors">보증종류</a>
+                    <a href="#diagnostic-section" class="hover:text-brand-900 transition-colors">자가진단</a>
+                    <a href="#costs-section" class="hover:text-brand-900 transition-colors">기회비용</a>
+                    <a href="#impact-section" class="hover:text-brand-900 transition-colors">도입효과</a>
+                </div>
+                <div>
+                    <button onclick="document.getElementById('contact-section').scrollIntoView({behavior: 'smooth'})" class="bg-brand-900 hover:bg-brand-800 text-white px-7 py-3 rounded-full text-[15px] font-bold transition-all shadow-lg hover:shadow-brand-900/20 active:scale-95">
+                        무료 진단 신청
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 히어로 섹션 -->
+    <header class="pt-48 pb-32 bg-slate-50 relative overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:32px_32px] opacity-40"></div>
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+            <div class="flex flex-col items-center text-center">
+                <div class="inline-flex items-center bg-accent-500/10 text-accent-600 px-5 py-2 rounded-full text-sm font-extrabold mb-10 border border-accent-500/20 shadow-sm">
+                    <span class="mr-2">✨</span> 기업 성장을 위한 전략적 보증 파트너십
+                </div>
+                <h1 class="text-5xl md:text-7xl font-black text-brand-900 mb-10 leading-[1.15] tracking-tight">
+                    복잡한 <span class="text-accent-500">이행보증보험,</span><br>
+                    관리는 맡기고 업무에 집중하세요.
+                </h1>
+                <p class="text-xl md:text-2xl text-slate-600 max-w-3xl font-semibold leading-relaxed mb-14">
+                    단순 대행을 넘어 기업의 <span class="text-brand-900 font-extrabold underline decoration-accent-500 underline-offset-8 decoration-4">신용 자산을 최적화</span>하여<br class="hidden md:block">
+                    최대 한도 확보와 비용 절감을 실현합니다.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-5">
+                    <button onclick="document.getElementById('diagnostic-section').scrollIntoView({behavior: 'smooth'})" class="bg-brand-900 text-white px-12 py-5 rounded-2xl text-lg font-black shadow-2xl shadow-brand-900/20 transition-transform hover:-translate-y-1">지금 자가진단하기</button>
+                    <button onclick="document.getElementById('types-section').scrollIntoView({behavior: 'smooth'})" class="bg-white text-slate-700 border border-slate-200 px-12 py-5 rounded-2xl text-lg font-black shadow-sm hover:bg-slate-50 transition-colors">서비스 안내</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- 보증종류 섹션 -->
+        <section id="types-section" class="py-28 bg-white">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+                    <div class="max-w-2xl">
+                        <h2 class="text-sm font-black text-accent-500 uppercase tracking-[0.25em] mb-4">Service Category</h2>
+                        <h3 class="text-4xl md:text-5xl font-extrabold text-brand-900 tracking-tight">주요 이행보증의 종류</h3>
+                    </div>
+                    <p class="text-slate-500 text-xl font-semibold leading-relaxed">
+                        사업 단계마다 필수적인 <span class="text-brand-900">안전장치</span>입니다.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+                    <div class="guarantee-card bg-slate-50 rounded-3xl p-10">
+                        <div class="text-5xl mb-8">🎯</div>
+                        <h4 class="text-2xl font-bold text-brand-900 mb-3 tracking-tight">입찰보증</h4>
+                        <p class="text-xs text-slate-400 font-black mb-6 uppercase tracking-widest">Bid Bond</p>
+                        <p class="text-[15px] text-slate-600 leading-relaxed font-semibold">낙찰 후 계약 미체결 시 발생하는 손해를 완벽히 보장합니다.</p>
+                    </div>
+                    <div class="guarantee-card bg-slate-50 rounded-3xl p-10">
+                        <div class="text-5xl mb-8">🤝</div>
+                        <h4 class="text-2xl font-bold text-brand-900 mb-3 tracking-tight">계약보증</h4>
+                        <p class="text-xs text-slate-400 font-black mb-6 uppercase tracking-widest">Performance</p>
+                        <p class="text-[15px] text-slate-600 leading-relaxed font-semibold">계약상의 의무 불이행에 대비하여 계약금 일부를 보장합니다.</p>
+                    </div>
+                    <div class="guarantee-card bg-slate-50 rounded-3xl p-10">
+                        <div class="text-5xl mb-8">💰</div>
+                        <h4 class="text-2xl font-bold text-brand-900 mb-3 tracking-tight">선금급보증</h4>
+                        <p class="text-xs text-slate-400 font-black mb-6 uppercase tracking-widest">Advance Pay</p>
+                        <p class="text-[15px] text-slate-600 leading-relaxed font-semibold">지급받은 선금에 대한 확실한 반환 의무를 보장합니다.</p>
+                    </div>
+                    <div class="guarantee-card bg-slate-50 rounded-3xl p-10">
+                        <div class="text-5xl mb-8">🛠️</div>
+                        <h4 class="text-2xl font-bold text-brand-900 mb-3 tracking-tight">하자보증</h4>
+                        <p class="text-xs text-slate-400 font-black mb-6 uppercase tracking-widest">Maintenance</p>
+                        <p class="text-[15px] text-slate-600 leading-relaxed font-semibold">준공 후 발생하는 하자에 대한 보수 책임을 보장합니다.</p>
+                    </div>
+                    <div class="guarantee-card bg-slate-50 rounded-3xl p-10">
+                        <div class="text-5xl mb-8">💳</div>
+                        <h4 class="text-2xl font-bold text-brand-900 mb-3 tracking-tight">지급보증</h4>
+                        <p class="text-xs text-slate-400 font-black mb-6 uppercase tracking-widest">Payment</p>
+                        <p class="text-[15px] text-slate-600 leading-relaxed font-semibold">물품 대금 등 각종 지급 의무의 확실한 이행을 보장합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 자가진단 섹션 -->
+        <section id="diagnostic-section" class="py-28 bg-slate-50">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12">
+                <div class="bg-white rounded-[48px] shadow-2xl overflow-hidden border border-slate-100">
+                    <div class="grid grid-cols-1 lg:grid-cols-2">
+                        <!-- 진단 입력 -->
+                        <div class="p-12 md:p-20 border-b lg:border-b-0 lg:border-r border-slate-100">
+                            <h3 class="text-4xl font-black text-brand-900 mb-6 tracking-tight">상황별 맞춤 자가진단</h3>
+                            <p class="text-slate-500 text-xl mb-14 font-semibold">현재 기업이 처한 상황을 체크해 주십시오.</p>
+                            
+                            <form id="diagForm" class="space-y-12">
+                                <div class="space-y-6">
+                                    <p class="text-[17px] font-extrabold text-brand-900 flex items-center">
+                                        <span class="w-7 h-7 bg-brand-900 text-white rounded-full text-xs flex items-center justify-center mr-4">1</span>
+                                        사업 진행 단계 및 보증 필요 시점
+                                    </p>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <input type="checkbox" id="q1" value="bid" class="hidden" onchange="runDiagnostic()">
+                                        <label for="q1" class="border-2 border-slate-100 rounded-2xl p-5 text-center cursor-pointer transition-all text-sm font-black hover:bg-slate-50">입찰 참가 예정 (입찰보증)</label>
+                                        
+                                        <input type="checkbox" id="q2" value="contract" class="hidden" onchange="runDiagnostic()">
+                                        <label for="q2" class="border-2 border-slate-100 rounded-2xl p-5 text-center cursor-pointer transition-all text-sm font-black hover:bg-slate-50">본 계약 체결 (계약보증)</label>
+                                        
+                                        <input type="checkbox" id="q3" value="advance" class="hidden" onchange="runDiagnostic()">
+                                        <label for="q3" class="border-2 border-slate-100 rounded-2xl p-5 text-center cursor-pointer transition-all text-sm font-black hover:bg-slate-50">선금/중도금 신청 (선금보증)</label>
+                                        
+                                        <input type="checkbox" id="q4" value="maintenance" class="hidden" onchange="runDiagnostic()">
+                                        <label for="q4" class="border-2 border-slate-100 rounded-2xl p-5 text-center cursor-pointer transition-all text-sm font-black hover:bg-slate-50">준공/검수 완료 (하자보증)</label>
+
+                                        <input type="checkbox" id="q5" value="payment" class="hidden" onchange="runDiagnostic()">
+                                        <label for="q5" class="border-2 border-slate-100 rounded-2xl p-5 text-center cursor-pointer transition-all text-sm font-black hover:bg-slate-50">대금 결제 보증 (지급보증)</label>
+
+                                        <input type="checkbox" id="q6" value="custom" class="hidden" onchange="runDiagnostic()">
+                                        <label for="q6" class="border-2 border-slate-100 rounded-2xl p-5 text-center cursor-pointer transition-all text-sm font-black hover:bg-slate-50">관세/인허가 (기타보증)</label>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-6 pt-4">
+                                    <p class="text-[17px] font-extrabold text-brand-900 flex items-center">
+                                        <span class="w-7 h-7 bg-brand-900 text-white rounded-full text-xs flex items-center justify-center mr-4">2</span>
+                                        보증 업무 핵심 고충 (Pain Points)
+                                    </p>
+                                    <div class="space-y-4">
+                                        <input type="checkbox" id="c1" class="hidden" onchange="runDiagnostic()">
+                                        <label for="c1" class="flex items-center border-2 border-slate-100 rounded-2xl p-6 cursor-pointer transition-all text-sm font-black hover:bg-slate-50">
+                                            📊 보증 한도가 부족하여 대형 프로젝트 수주가 어려움
+                                        </label>
+                                        
+                                        <input type="checkbox" id="c2" class="hidden" onchange="runDiagnostic()">
+                                        <label for="c2" class="flex items-center border-2 border-slate-100 rounded-2xl p-6 cursor-pointer transition-all text-sm font-black hover:bg-slate-50">
+                                            💸 매월 지출되는 보증 보험료 원가 절감이 절실함
+                                        </label>
+
+                                        <input type="checkbox" id="c3" class="hidden" onchange="runDiagnostic()">
+                                        <label for="c3" class="flex items-center border-2 border-slate-100 rounded-2xl p-6 cursor-pointer transition-all text-sm font-black hover:bg-slate-50">
+                                            ⚡ 촉박한 입찰/계약 일정으로 신속한 발급이 필요함
+                                        </label>
+
+                                        <input type="checkbox" id="c4" class="hidden" onchange="runDiagnostic()">
+                                        <label for="c4" class="flex items-center border-2 border-slate-100 rounded-2xl p-6 cursor-pointer transition-all text-sm font-black hover:bg-slate-50">
+                                            📉 낮은 신용등급으로 인해 심사 거절이나 담보 요구가 발생함
+                                        </label>
+
+                                        <input type="checkbox" id="c5" class="hidden" onchange="runDiagnostic()">
+                                        <label for="c5" class="flex items-center border-2 border-slate-100 rounded-2xl p-6 cursor-pointer transition-all text-sm font-black hover:bg-slate-50">
+                                            📁 매번 바뀌는 서류 준비와 보완 업무 처리가 번거로움
+                                        </label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- 진단 결과 -->
+                        <div class="p-12 md:p-20 bg-slate-50/50 flex flex-col items-center justify-center">
+                            <div id="diag-placeholder" class="text-center">
+                                <div class="w-28 h-28 bg-white rounded-[40px] flex items-center justify-center text-6xl mb-10 mx-auto shadow-sm animate-pulse">📋</div>
+                                <p class="text-slate-400 text-2xl font-black leading-relaxed tracking-tight">항목을 선택하시면<br>AI 정밀 진단이 시작됩니다.</p>
+                            </div>
+
+                            <div id="diag-result" class="hidden w-full fade-in">
+                                <div class="bg-white rounded-[32px] p-10 shadow-xl border border-slate-100 w-full mb-12">
+                                    <div class="flex items-center justify-between mb-8">
+                                        <h4 class="text-2xl font-black text-brand-900 tracking-tight">컨설팅 진단 레포트</h4>
+                                        <span class="bg-accent-500 text-white px-4 py-1.5 rounded-xl text-xs font-black">AI ANALYTICS</span>
+                                    </div>
+                                    <div id="rec-tags" class="flex flex-wrap gap-3 mb-8"></div>
+                                    <p id="diag-text" class="text-lg text-slate-600 leading-relaxed font-semibold"></p>
+                                </div>
+                                
+                                <div class="diag-chart-container">
+                                    <canvas id="diagChart"></canvas>
+                                </div>
+                                <p class="text-[12px] text-slate-400 font-black text-center mt-8 uppercase tracking-[0.2em]">Predicted Improvement Performance</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 기회비용 섹션 -->
+        <section id="costs-section" class="py-28 bg-white">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12 text-center">
+                <h3 class="text-sm font-black text-accent-500 uppercase tracking-[0.3em] mb-4">Risk Management</h3>
+                <h2 class="text-4xl md:text-5xl font-extrabold text-brand-900 mb-24 tracking-tight">자체 관리 시 발생하는 숨은 기회비용</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                    <div class="p-12 rounded-[48px] hover:bg-slate-50 transition-all border border-transparent hover:border-slate-100 group">
+                        <div class="w-24 h-24 bg-slate-100 rounded-[32px] flex items-center justify-center text-5xl mb-10 mx-auto group-hover:scale-110 transition-transform">📉</div>
+                        <h3 class="text-2xl font-black mb-6 text-brand-900">업무 효율 저하</h3>
+                        <p class="text-slate-500 text-lg font-semibold leading-relaxed">기관별 상이한 서류 보완 요청으로 인해 반복적인 실무 리소스가 낭비됩니다.</p>
+                    </div>
+                    <div class="p-12 rounded-[48px] hover:bg-slate-50 transition-all border border-transparent hover:border-slate-100 group">
+                        <div class="w-24 h-24 bg-slate-100 rounded-[32px] flex items-center justify-center text-5xl mb-10 mx-auto group-hover:scale-110 transition-transform">🚫</div>
+                        <h3 class="text-2xl font-black mb-6 text-brand-900">수주 기회 상실</h3>
+                        <p class="text-slate-500 text-lg font-semibold leading-relaxed">선제적 신용 관리 미흡으로 정작 중요한 시점에 보증 한도가 부족해 사업권을 포기하게 됩니다.</p>
+                    </div>
+                    <div class="p-12 rounded-[48px] hover:bg-slate-50 transition-all border border-transparent hover:border-slate-100 group">
+                        <div class="w-24 h-24 bg-slate-100 rounded-[32px] flex items-center justify-center text-5xl mb-10 mx-auto group-hover:scale-110 transition-transform">💸</div>
+                        <h3 class="text-2xl font-black mb-6 text-brand-900">수수료 과다 지출</h3>
+                        <p class="text-slate-500 text-lg font-semibold leading-relaxed">적정 심사 방어를 하지 못해 불필요하게 높은 보험 요율을 적용받는 경우가 빈번합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 도입효과 섹션 -->
+        <section id="impact-section" class="py-32 bg-brand-900 text-white overflow-hidden">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12">
+                <div class="flex flex-col lg:flex-row gap-24 items-center">
+                    <div class="w-full lg:w-1/2">
+                        <h3 class="text-accent-500 font-black text-sm uppercase tracking-widest mb-6">Quantitative Value</h3>
+                        <h2 class="text-4xl md:text-6xl font-black mb-10 leading-tight tracking-tight">전문가 컨설팅의<br>확실한 정량적 효과</h2>
+                        <p class="text-slate-300 text-xl font-semibold leading-relaxed mb-16 opacity-90">
+                            데이터와 전문 심사 노하우가 결합되어 기업의 실물 가치를 극대화합니다. 자체 진행 대비 월등한 지표 변화를 확인하세요.
+                        </p>
+                        
+                        <div class="bg-white p-10 rounded-[48px] shadow-3xl">
+                            <div class="chart-container">
+                                <canvas id="impactChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w-full lg:w-1/2">
+                        <div class="flex space-x-3 mb-14 bg-white/5 p-2 rounded-2xl inline-flex border border-white/10">
+                            <button onclick="switchTab('manager')" id="btn-manager" class="tab-btn active px-10 py-4 rounded-xl text-[16px] font-black">실무 담당자 혜택</button>
+                            <button onclick="switchTab('ceo')" id="btn-ceo" class="tab-btn px-10 py-4 rounded-xl text-[16px] font-black text-white/50">C-Level / CFO 혜택</button>
+                        </div>
+
+                        <div id="content-manager" class="fade-in space-y-8">
+                            <div class="bg-white/5 border border-white/10 p-10 rounded-[40px] hover:bg-white/10 transition-all">
+                                <div class="text-4xl mb-6">⏱️</div>
+                                <h4 class="text-2xl font-black mb-3">행정 리소스 90% 절감</h4>
+                                <p class="text-slate-400 text-lg font-semibold leading-relaxed">반복되는 보증 신청 프로세스를 전문가에게 완전 위탁하여 본연의 핵심 업무에 집중하세요.</p>
+                            </div>
+                            <div class="bg-white/5 border border-white/10 p-10 rounded-[40px] hover:bg-white/10 transition-all">
+                                <div class="text-4xl mb-6">⚡</div>
+                                <h4 class="text-2xl font-black mb-3">신속 발급 데스크 가동</h4>
+                                <p class="text-slate-400 text-lg font-semibold leading-relaxed">긴급한 입찰 건도 전용 협의 채널을 통해 가장 빠르게 해결하여 수주 리스크를 차단합니다.</p>
+                            </div>
+                        </div>
+
+                        <div id="content-ceo" class="hidden fade-in space-y-8">
+                            <div class="bg-accent-500 p-10 rounded-[40px] shadow-2xl">
+                                <div class="text-4xl mb-6">📈</div>
+                                <h4 class="text-2xl font-black text-white mb-3">신용 한도 가시적 확대</h4>
+                                <p class="text-white/95 text-lg font-black leading-relaxed">신용 평가 관리 및 재무 보정 작업을 통해 대형 수주를 위한 보증 한도를 선제 확보합니다.</p>
+                            </div>
+                            <div class="bg-white/5 border border-white/10 p-10 rounded-[40px]">
+                                <div class="text-4xl mb-6">💰</div>
+                                <h4 class="text-2xl font-black mb-3">금융 비용 직접 절감</h4>
+                                <p class="text-slate-400 text-lg font-semibold leading-relaxed">재무 상태별 최적의 요율 협의를 대행하여 연간 고정 보험료를 직접적으로 낮춥니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 진행 절차 -->
+        <section class="py-28 bg-slate-50">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12">
+                <div class="text-center mb-20">
+                    <h2 class="text-4xl font-black text-brand-900 mb-6 tracking-tight">4단계 컨설팅 프로세스</h2>
+                    <p class="text-slate-500 text-xl font-semibold">도입 즉시 실무에 적용되는 체계적인 위탁 시스템을 구축합니다.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div class="bg-white p-10 rounded-[40px] border border-slate-100 shadow-sm text-center">
+                        <div class="w-12 h-12 bg-slate-100 text-brand-900 rounded-full flex items-center justify-center font-black mx-auto mb-8 text-lg">01</div>
+                        <h4 class="text-xl font-black text-brand-900 mb-4">정밀 진단</h4>
+                        <p class="text-slate-500 font-semibold leading-relaxed">현재 신용 상태 및<br>기존 요율 적정성 검토</p>
+                    </div>
+                    <div class="bg-white p-10 rounded-[40px] border border-slate-100 shadow-sm text-center">
+                        <div class="w-12 h-12 bg-slate-100 text-brand-900 rounded-full flex items-center justify-center font-black mx-auto mb-8 text-lg">02</div>
+                        <h4 class="text-xl font-black text-brand-900 mb-4">전략 수립</h4>
+                        <p class="text-slate-500 font-semibold leading-relaxed">수주 로드맵 기반<br>필요 한도 사전 설계</p>
+                    </div>
+                    <div class="bg-brand-900 p-10 rounded-[40px] shadow-2xl text-center relative transform scale-105 border-4 border-accent-500/30">
+                        <div class="w-12 h-12 bg-accent-500 text-white rounded-full flex items-center justify-center font-black mx-auto mb-8 text-lg shadow-lg shadow-accent-500/20">03</div>
+                        <h4 class="text-xl font-black text-white mb-4">실무 위탁</h4>
+                        <p class="text-white/80 font-black leading-relaxed">증권 발급 업무 일체 및<br>기관 심사 협의 대행</p>
+                    </div>
+                    <div class="bg-white p-10 rounded-[40px] border border-slate-100 shadow-sm text-center">
+                        <div class="w-12 h-12 bg-slate-100 text-brand-900 rounded-full flex items-center justify-center font-black mx-auto mb-8 text-lg">04</div>
+                        <h4 class="text-xl font-black text-brand-900 mb-4">상시 관리</h4>
+                        <p class="text-slate-500 font-semibold leading-relaxed">결산 대비 재무 관리 및<br>신인도 상승 지원</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 푸터/연락처 섹션 -->
+        <footer id="contact-section" class="bg-slate-900 text-white py-32">
+            <div class="max-w-5xl mx-auto px-6">
+                <div class="text-center mb-24">
+                    <h2 class="text-4xl md:text-6xl font-black mb-10 leading-tight">귀사의 신용을<br><span class="text-accent-500">가치와 실적</span>으로 증명합니다.</h2>
+                    <p class="text-xl text-slate-400 font-bold">지금 바로 전문 컨설턴트와 상담을 시작하세요.</p>
+                </div>
+
+                <div class="bg-slate-800/50 border border-white/10 rounded-[48px] p-10 md:p-20 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-80 h-80 bg-accent-500 opacity-5 rounded-full -mr-40 -mt-40"></div>
+                    
+                    <div class="flex flex-col md:flex-row items-center gap-16 md:gap-24 relative z-10">
+                        <!-- 전문가 프로필 -->
+                        <div class="space-y-10 w-full md:w-auto">
+                            <div>
+                                <p class="text-accent-500 font-black text-xs tracking-widest uppercase mb-3">Expert Profile</p>
+                                <h3 class="text-2xl font-extrabold mb-1">삼성생명 삼성센터법인지점</h3>
+                                <h4 class="text-4xl font-black text-white tracking-tighter">최세림 GFC</h4>
+                            </div>
+                            
+                            <div class="bg-slate-900 px-8 py-6 rounded-3xl border border-white/5 inline-flex flex-col group transition-all hover:border-accent-500/50">
+                                <p class="text-slate-500 text-xs font-black uppercase tracking-widest mb-2">Direct Contact</p>
+                                <a href="tel:010-7526-1826" class="text-3xl md:text-4xl font-mono font-black text-white group-hover:text-accent-500 transition-colors">010-7526-1826</a>
+                            </div>
+                        </div>
+
+                        <!-- 상담 연결 -->
+                        <div class="flex-1 w-full bg-white/5 p-10 rounded-[40px] border border-white/5">
+                            <div class="flex items-center gap-8">
+                                <div class="w-32 h-32 bg-white p-2 rounded-2xl flex-shrink-0">
+                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https%3A%2F%2Fmws.samsunglife.com%3A8440%2F%23%2Fmain%2Fbc%2FTSSBC500M%3Fmdigitkey%3D0002221232" alt="컨설턴트 QR">
+                                </div>
+                                <div class="space-y-3">
+                                    <h4 class="text-2xl font-black text-accent-500">상담 채널 연결</h4>
+                                    <p class="text-slate-300 text-lg font-semibold leading-snug">스캔 시 컨설턴트의 상세 정보와<br>포트폴리오를 확인하실 수 있습니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-24 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-slate-500 gap-6">
+                    <p class="text-sm font-bold">&copy; 2026 Guarantee Solution Partners Corp. All rights reserved.</p>
+                    <div class="flex gap-8 text-xs font-black uppercase tracking-widest">
+                        <span>Professional</span>
+                        <span>Credit</span>
+                        <span>Trust</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        let diagChartInstance = null;
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.classList.add('text-white/50');
+            });
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.add('active');
+            activeBtn.classList.remove('text-white/50');
+
+            document.getElementById('content-manager').classList.add('hidden');
+            document.getElementById('content-ceo').classList.add('hidden');
+            document.getElementById('content-' + tabId).classList.remove('hidden');
+        }
+
+        function runDiagnostic() {
+            const checks = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'c1', 'c2', 'c3', 'c4', 'c5'].map(id => document.getElementById(id).checked);
+            const anyChecked = checks.some(c => c);
+
+            if (!anyChecked) {
+                document.getElementById('diag-placeholder').classList.remove('hidden');
+                document.getElementById('diag-result').classList.add('hidden');
+                return;
+            }
+
+            document.getElementById('diag-placeholder').classList.add('hidden');
+            document.getElementById('diag-result').classList.remove('hidden');
+
+            const tagContainer = document.getElementById('rec-tags');
+            tagContainer.innerHTML = '';
+            
+            const recs = [];
+            if (document.getElementById('q1').checked) recs.push('입찰 프로세스 전담');
+            if (document.getElementById('q2').checked) recs.push('계약 심사 최적화');
+            if (document.getElementById('q3').checked) recs.push('선금급 리스크 헷지');
+            if (document.getElementById('q4').checked) recs.push('사후 하자관리 체계');
+            if (document.getElementById('q5').checked) recs.push('지급보증 한도확보');
+            if (document.getElementById('q6').checked) recs.push('복합보증 솔루션');
+            
+            recs.slice(0, 4).forEach(txt => {
+                const span = document.createElement('span');
+                span.className = "bg-brand-900 text-white text-[12px] font-black px-4 py-2 rounded-xl uppercase tracking-tighter";
+                span.innerText = txt;
+                tagContainer.appendChild(span);
+            });
+
+            let text = "진단 결과, 귀사는 ";
+            const hasCritical = document.getElementById('c1').checked || document.getElementById('c4').checked;
+            const hasUrgent = document.getElementById('c3').checked;
+            
+            if (hasCritical) text += "부족한 보증 한도와 신용 리스크를 해결하기 위한 <span class='text-accent-500 font-black'>전략적 신용 보정 프로세스</span>가 즉시 가동되어야 합니다. ";
+            if (document.getElementById('c2').checked) text += "재무 지표 개선을 통해 <span class='text-accent-500 font-black'>보증 보험료를 약 15~20% 수준으로 절감</span>할 수 있는 가능성이 매우 높습니다.";
+            if (hasUrgent) text += " 또한 촉박한 일정을 준수하기 위해 <span class='text-brand-900 font-black'>사전 심사 협의 채널</span> 활용이 권장됩니다.";
+            if (!hasCritical && !hasUrgent && !document.getElementById('c2').checked) text += "행정 절차 위탁만으로도 <span class='text-brand-900 font-black'>실무 공수의 85% 이상</span>을 즉시 절감할 수 있는 상태입니다.";
+            
+            document.getElementById('diag-text').innerHTML = text;
+
+            const base1 = (document.getElementById('c1').checked || document.getElementById('c4').checked) ? 95 : 70;
+            const base2 = document.getElementById('c2').checked ? 92 : 60;
+            const base3 = (document.getElementById('c3').checked || document.getElementById('c5').checked) ? 98 : 75;
+            updateDiagChart([base1, base2, base3]);
+        }
+
+        function updateDiagChart(data) {
+            const ctx = document.getElementById('diagChart').getContext('2d');
+            if (diagChartInstance) diagChartInstance.destroy();
+
+            diagChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['보증 한도 가용성', '비용 원가 효율', '업무 효율성'],
+                    datasets: [{
+                        data: data,
+                        backgroundColor: ['#0f172a', '#ea580c', '#475569'],
+                        borderRadius: 16,
+                        barThickness: 36
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { 
+                        x: { min: 0, max: 100, display: false },
+                        y: { grid: { display: false }, ticks: { font: { size: 14, weight: '800' }, color: '#1e293b' } }
+                    }
+                }
+            });
+        }
+
+        window.onload = function() {
+            const ctx = document.getElementById('impactChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: [['행정 부하량', '(낮을수록 좋음)'], '보증 한도 가용성', '금융 비용 효율', '발급 리드타임', '심사 대응 역량'],
+                    datasets: [{
+                        label: '자체 관리 시',
+                        data: [100, 45, 55, 40, 35],
+                        borderColor: '#94a3b8',
+                        backgroundColor: 'rgba(148, 163, 184, 0.15)',
+                        borderDash: [5, 5],
+                        pointRadius: 0
+                    }, {
+                        label: '컨설팅 도입 후',
+                        data: [15, 98, 92, 98, 95],
+                        borderColor: '#ea580c',
+                        backgroundColor: 'rgba(234, 88, 12, 0.2)',
+                        borderWidth: 4,
+                        pointBackgroundColor: '#ea580c',
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { 
+                            position: 'bottom',
+                            labels: { font: { weight: '800', size: 14 }, padding: 25 } 
+                        } 
+                    },
+                    scales: { 
+                        r: { 
+                            min: 0, max: 100, 
+                            ticks: { display: false }, 
+                            pointLabels: { font: { size: 13, weight: '700' }, color: '#1e293b' } 
+                        } 
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
